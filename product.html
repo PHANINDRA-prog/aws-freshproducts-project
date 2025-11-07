@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshHarvest - Organic Fruits Online</title>
+    <style>
+        :root {
+            --primary-green: #4CAF50;
+            --accent-orange: #FFA726;
+            --light-bg: #f5f5f5;
+            --text-dark: #333;
+            --text-muted: #666;
+            --card-bg: #ffffff;
+            --label-organic: #388E3C;
+            --label-seasonal: #FBC02D;
+            --label-local: #8E24AA;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        header {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .hero {
+            background: linear-gradient(to right, #81c784, #aed581);
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .cta-button {
+            background-color: var(--accent-orange);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #fb8c00;
+        }
+
+        .section {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-green);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .product-card h3 {
+            margin: 0.75rem 0 0.25rem;
+            font-size: 1.2rem;
+        }
+
+        .product-card p {
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+
+        .product-card .price {
+            font-size: 1.3rem;
+            margin: 0.5rem 0;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .quantity-selector button {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .quantity-selector input {
+            width: 60px;
+            text-align: center;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary-green);
+            border-radius: 4px;
+            padding: 0.3rem;
+        }
+
+        .buy-button {
+            width: 100%;
+            background-color: var(--accent-orange);
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .buy-button:hover {
+            background-color: #fb8c00;
+        }
+
+        .label {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: white;
+        }
+
+        .label.organic {
+            background-color: var(--label-organic);
+        }
+
+        .label.seasonal {
+            background-color: var(--label-seasonal);
+        }
+
+        .label.local {
+            background-color: var(--label-local);
+        }
+
+        button {
+            margin-top: 0.75rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #388E3C;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 500px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            color: var(--primary-green);
+            margin-bottom: 1rem;
+        }
+
+        .modal-content p {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .modal-content button {
+            background-color: var(--primary-green);
+            padding: 0.75rem 2rem;
+        }
+
+        .hygiene ul {
+            list-style: none;
+            padding: 0;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .hygiene li {
+            margin: 0.75rem 0;
+            font-size: 1rem;
+            color: var(--text-muted);
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .hygiene li::before {
+            content: "✔";
+            position: absolute;
+            left: 0;
+            color: var(--primary-green);
+        }
+
+        footer {
+            background-color: var(--primary-green);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 0.5rem;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">🍏 FreshHarvest</div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Hygiene</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Nature's Goodness Delivered Fresh</h1>
+        <p>Organic, hygienic, and eco-friendly fruits at your doorstep</p>
+        <a href="#products" class="cta-button">Shop Now</a>
+    </section>
+
+    <section class="section products" id="products">
+        <h2>🍓 Featured Fruits</h2>
+        <div class="product-grid" id="productGrid">
+            <div class="product-card" data-product-id="mango" data-product-name="Alphonso Mango" data-price="250">
+                <img src="https://buyfreshindianmangoes.com/wp-content/uploads/2024/03/Alphonso-Mangoes-1-1170x1170.jpeg"
+                    alt="Alphonso Mango" />
+                <h3>Alphonso Mango</h3>
+                <p class="price">₹250/kg</p>
+                <span class="label organic">Organic</span>
+                <div class="quantity-selector">
+                    <button onclick="changeQuantity('mango', -1)">-</button>
+                    <input type="number" id="qty-mango" value="1" min="1" max="50" readonly />
+                    <button onclick="changeQuantity('mango', 1)">+</button>
+                </div>
+                <button class="buy-button" onclick="buyProduct('mango', 'Alphonso Mango', 250)">Buy Now</button>
+            </div>
+            <div class="product-card" data-product-id="apple" data-product-name="Green Apple" data-price="180">
+                <img src="https://hips.hearstapps.com/hmg-prod/images/close-up-of-green-apple-against-white-background-royalty-free-image-1659450368.jpg"
+                    alt="Green Apple" />
+                <h3>Green Apple</h3>
+                <p class="price">₹180/kg</p>
+                <span class="label seasonal">Seasonal</span>
+                <div class="quantity-selector">
+                    <button onclick="changeQuantity('apple', -1)">-</button>
+                    <input type="number" id="qty-apple" value="1" min="1" max="50" readonly />
+                    <button onclick="changeQuantity('apple', 1)">+</button>
+                </div>
+                <button class="buy-button" onclick="buyProduct('apple', 'Green Apple', 180)">Buy Now</button>
+            </div>
+            <div class="product-card" data-product-id="banana" data-product-name="Banana" data-price="60">
+                <img src="http://upload.wikimedia.org/wikipedia/commons/6/69/Banana.png" alt="Banana" />
+                <h3>Banana</h3>
+                <p class="price">₹60/kg</p>
+                <span class="label local">Locally Sourced</span>
+                <div class="quantity-selector">
+                    <button onclick="changeQuantity('banana', -1)">-</button>
+                    <input type="number" id="qty-banana" value="1" min="1" max="50" readonly />
+                    <button onclick="changeQuantity('banana', 1)">+</button>
+                </div>
+                <button class="buy-button" onclick="buyProduct('banana', 'Banana', 60)">Buy Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Purchase Confirmation Modal -->
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <h2>🎉 Order Confirmed!</h2>
+            <p id="modalMessage"></p>
+            <button onclick="closeModal()">Continue Shopping</button>
+        </div>
+    </div>
+
+    <section class="section hygiene">
+        <h2>🧼 Our Hygiene Promise</h2>
+        <ul>
+            <li>Certified organic farms</li>
+            <li>Cold-chain logistics for freshness</li>
+            <li>Eco-friendly packaging</li>
+            <li>Staff hygiene protocols</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 FreshHarvest. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
